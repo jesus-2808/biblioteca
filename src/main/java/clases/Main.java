@@ -5,114 +5,157 @@ package clases;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    
-    public static void main (String [] args) {
-    	
-    	ArrayList<Libro> catalogo = new ArrayList<Libro>();
-    	
-    	while(true) {
-    		int opcion = menu();
-    		switch (opcion) {
+
+	public static void main(String[] args) {
+
+		ArrayList<Libro> catalogo = new ArrayList<Libro>();
+		/// Implementar el equals con el isbn
+		/// para baja de libro implementar un submenu.
+
+		while (true) {
+			int opcion = menu();
+			switch (opcion) {
 			case 1:
-				//TODO Alta de Libro
-				//titulo:isbn:genero:autor:paginas
+				// titulo:isbn:genero:autor:paginas
 				alta(catalogo);
 				break;
 			case 2:
-				//TODO Lista de Libros
+				listarLibros(catalogo);
 				break;
+			case 3:
+				bajaLibros(catalogo);
 			default:
 				break;
 			}
-    	}
-    }
-    
-    private static int menu() {
-    	int opcion=0;
-    	
-    	do {
-    		System.out.println("Opciones:");
-    		System.out.println("1. Alta de Libro");
-    		System.out.println("2. Lista de Libros");
-    		System.out.println("3. Baja de Libros");
-    		System.out.println("4. BÃºsqueda de Libros");
-    		System.out.println("5. Ordenacion de Libros");
-    		System.out.println("Introduce la opcion:");
-    	
-    		opcion = leerOpcion(2);
-    		
-    	}while(opcion <=0);
-    	
-    	return opcion;
-    }
-    
-    private static int leerOpcion(int max) {
-    	int opcion = -1;
-    	try {
-    		Scanner teclado = new Scanner(System.in);
-    		opcion=teclado.nextInt();
-    		if(opcion>max)
-    			opcion=-1;
-    	}catch (InputMismatchException e) {
+		}
+	}
+
+	private static int menu() {
+		int opcion = 0;
+
+		do {
+			System.out.println("Opciones:");
+			System.out.println("1. Alta de Libro");
+			System.out.println("2. Lista de Libros");
+			System.out.println("3. Baja de Libros");
+			System.out.println("4. Búsqueda de Libros");
+			System.out.println("5. Ordenacion de Libros");
+			System.out.println("Introduce la opcion:");
+
+			opcion = leerOpcion(5);
+
+		} while (opcion <= 0);
+
+		return opcion;
+	}
+
+	private static int leerOpcion(int max) {
+		int opcion = -1;
+		try {
+			Scanner teclado = new Scanner(System.in);
+			opcion = teclado.nextInt();
+			if (opcion > max)
+				opcion = -1;
+		} catch (InputMismatchException e) {
 			System.out.println("OpciÃ³n incorrecta");
 		}
-    	
-    	return opcion;
-    }
-    
-    private static void alta(ArrayList<Libro> catalogo) {
-    	//Leer de la entrada
-    	String datosLibro = obtenerDatosLibro();
-    	//titulo:isbn:genero:autor:paginas
-    	//Procesar la entrada
-    	Libro libro = procesaEntrada(datosLibro);
-    	//Crear el libro con los datos de la entrada
-    	catalogo.add(libro);
-    	//Meter el libro en el catalogo
-    }
-    
-    private static String obtenerDatosLibro() {
-    	String datos=null;
-    	
-    	boolean validado=false;
-    	while(!validado) {
-    		System.out.println("Introduce los datos de un libro.");
-    		System.out.println("Usa el formato \"titulo:isbn:genero:autor:paginas\"");
-    		try {
-    			datos = leerCadena();
-    			if(true)//Supongo de momento que valida siempre
-    				validado=true;
-    		}catch (InputMismatchException e) {
-				System.out.println("Datos de entrada no vÃ¡lidos");
+
+		return opcion;
+	}
+
+	private static void alta(ArrayList<Libro> catalogo) {
+		// Leer de la entrada
+		String datosLibro = obtenerDatosLibro();
+		// titulo:isbn:genero:autor:paginas
+		// Procesar la entrada
+		Libro libro = procesaEntrada(datosLibro);
+		// Crear el libro con los datos de la entrada
+		catalogo.add(libro);
+		// Meter el libro en el catalogo
+	}
+
+	private static String obtenerDatosLibro() {
+		String datos = null;
+
+		boolean validado = false;
+		while (!validado) {
+			System.out.println("Introduce los datos de un libro.");
+			System.out.println("Usa el formato \"titulo:isbn:genero:autor:paginas\"");
+			try {
+				datos = leerCadena();
+				if (true)// Supongo de momento que valida siempre. Hay que comprobar que tenga el formato
+							// deseado
+					validado = true;
+			} catch (InputMismatchException e) {
+				System.out.println("Datos de entrada no válidos");
 			}
-    	}
-    	
-    	return datos;
-    }
-    
-    private static Libro procesaEntrada(String entrada) {
-    	Libro libro = null;
-    	
-    	String [] datos = entrada.split(":");
-    	
-    	String titulo = datos[0];
-    	String isbn = datos[1];
-    	Genero genero = Genero.getGenero(datos[2]);
-    	String autor = datos[3];
-    	Integer paginas = Integer.parseInt(datos[4]);
-    	
-    	
-    	return libro;
-    }
-    
-    private static String leerCadena() {
-    	String opcion = null;
-    	Scanner teclado = new Scanner(System.in);
-        opcion=teclado.nextLine();
-    	return opcion;
-    }
+		}
+
+		return datos;
+	}
+
+	public static Libro procesaEntrada(String entrada) {
+		Libro libro = new Libro();
+
+		String[] datos = entrada.split(":");
+
+		String titulo = datos[0]; /// libro.setTitulo
+		String isbn = datos[1];
+		Genero genero = Genero.getGenero(datos[2]);
+		String autor = datos[3];
+		Integer paginas = Integer.parseInt(datos[4]);
+
+		libro.setTitulo(titulo);
+		libro.setAutor(autor);
+		libro.setIsbn(isbn);
+		libro.setGenero(genero);
+		libro.setAutor(autor);
+		libro.setPaginas(paginas);
+
+		System.out.println(libro);
+		return libro;
+
+	}
+
+	public static void listarLibros(ArrayList<Libro> catalogo) {
+		int i = 1;
+		System.out.println("Libros en la lista");
+		for (Libro l : catalogo) {
+			System.out.println("Libro " + i + ": " + l);
+			i++;
+		}
+
+	}
+
+	private static void bajaLibros(ArrayList<Libro> catalogo) {
+		int cantidadLibros = catalogo.size();
+		Scanner sc = new Scanner(System.in);
+		try {
+			if (cantidadLibros == 0) {
+				System.out.print("No hay libros para dar de baja");
+				return;
+			} else if (cantidadLibros == 1) {
+				System.out.println("¿Quiere dar de baja el único libro que hay? (indique 0)");
+				int posicion = sc.nextInt();
+				catalogo.remove(posicion);
+			} else {
+				System.out.println("¿Que número de libro desea dar de baja? (del 0 al " + (catalogo.size() - 1) + ")");
+				int posicion = sc.nextInt();
+				catalogo.remove(posicion);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	private static String leerCadena() {
+		String opcion = null;
+		Scanner teclado = new Scanner(System.in);
+		opcion = teclado.nextLine();
+		return opcion;
+	}
+
 }
