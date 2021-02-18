@@ -1,5 +1,6 @@
 package clases;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -105,6 +106,16 @@ public class Libro implements Comparable<Libro>, Comparator <Libro>{
 	public int compare(Libro o, Libro a) {
 		
 		return o.getPaginas() - a.getPaginas();
+	}
+
+	public static int size(String catalogo) {
+		
+		return 0;
+	}
+
+	public static ArrayList<Libro> readObject() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

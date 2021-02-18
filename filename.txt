@@ -1,0 +1,4 @@
+Patria:0001:novela:Fernando Aramburu:825
+El Quijote:0002:novela:Cervantes:1200
+1984:0003:novela:Orwell:325
+El Señor de los Anillos:0004:ficcion:Tolkien:1220
