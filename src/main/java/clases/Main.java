@@ -3,13 +3,22 @@
  */
 package clases;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-public class Main {
 
-	public static void main(String[] args) {
+
+public class Main implements Comparable<Libro>{
+
+	public static void main(String[] args) throws IOException {
+		
 
 		ArrayList<Libro> catalogo = new ArrayList<Libro>();
 		/// Implementar el equals con el isbn
@@ -27,12 +36,45 @@ public class Main {
 				break;
 			case 3:
 				bajaLibros(catalogo);
+				break;
+			case 4:
+				buscaLibros(catalogo);
 			default:
+			case 5:
+				//Collections.sort(catalogo);
+				//System.out.println(catalogo);
+				ordenaLibros(catalogo);
+				break;
+			case 6:
+				createNewFile();
 				break;
 			}
 		}
 	}
 
+		
+	
+private static void ordenaLibros(ArrayList<Libro> catalogo) {
+		System.out.println("¿Desea ordenar los libros por título (marque t) o por páginas(marque p)?");
+		Scanner teclado=new Scanner (System.in);
+		char respuesta;
+		respuesta=teclado.next().charAt(0);
+		if(respuesta=='T'|| respuesta=='t') {
+			Collections.sort(catalogo);
+		}else if (respuesta=='P'|| respuesta=='p') {
+			Collections.sort(catalogo, new Libro());
+			;
+		}else
+		System.out.println("Respuesta incorrecta");
+	}
+
+// Patria:0001:novela:Aramburu:925
+//El Quijote:0002:novela:Cervantes:1300
+//Pascual Duarte:0003:novela:Cela:180
+
+//Implements comparable<Libro>
+	///
+//	return this.titulo.compareTo(Libro l)
 	private static int menu() {
 		int opcion = 0;
 
@@ -43,9 +85,10 @@ public class Main {
 			System.out.println("3. Baja de Libros");
 			System.out.println("4. Búsqueda de Libros");
 			System.out.println("5. Ordenacion de Libros");
+			System.out.println("6. Creación de fichero");
 			System.out.println("Introduce la opcion:");
 
-			opcion = leerOpcion(5);
+			opcion = leerOpcion(6);
 
 		} while (opcion <= 0);
 
@@ -121,10 +164,10 @@ public class Main {
 	}
 
 	public static void listarLibros(ArrayList<Libro> catalogo) {
-		int i = 1;
+		int i = 0;
 		System.out.println("Libros en la lista");
-		for (Libro l : catalogo) {
-			System.out.println("Libro " + i + ": " + l);
+		for (Libro libro : catalogo) {
+			System.out.println("Libro " + i + ": " + libro);
 			i++;
 		}
 
@@ -151,11 +194,53 @@ public class Main {
 		}
 	}
 
+	private static void buscaLibros(ArrayList<Libro> catalogo) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Indique el ISBN del libro que desea buscar");
+		String isbn = sc.nextLine();
+		Libro a=new Libro();
+	
+		
+		//a.setISBN
+		//int pos=catalogo.indexof(a);;---sacar posicion del objeto a en el catalogo
+		for (Libro libro : catalogo) {
+			int Posicion=catalogo.indexOf(libro);
+			if (libro.getIsbn().equals(isbn)) {
+				System.out.println("La posición del libro es: " + catalogo.indexOf(libro));
+				System.out.println(libro);
+				return;
+			}
+		}
+		System.out.println("No existe ningún libro con ese ISBN");
+	}
+
 	private static String leerCadena() {
 		String opcion = null;
 		Scanner teclado = new Scanner(System.in);
 		opcion = teclado.nextLine();
 		return opcion;
 	}
+	public static int compareTo(ArrayList<Libro> catalogo) {
+		return 0;
+	
+	}
+	@Override
+	public int compareTo(Libro arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	private static void createNewFile() throws IOException {
+		  
+			 
+		      FileWriter fichero = new FileWriter("filename.txt");  
+		      fichero.write("el quijote");
+		    
+		 }
+		// }
+	}
+//	}	
 
-}
+//	}
+
+

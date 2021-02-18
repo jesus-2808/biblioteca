@@ -1,15 +1,18 @@
 package clases;
 
-public class Libro {
-	
+import java.util.Collections;
+import java.util.Comparator;
+
+public class Libro implements Comparable<Libro>, Comparator <Libro>{
+
 	private String titulo;
 	private String isbn;
 	private Genero genero;
 	private String autor;
 	private Integer paginas;
-	
+
 	public Libro() {
-		
+
 	}
 
 	/**
@@ -69,22 +72,40 @@ public class Libro {
 
 	@Override
 	public String toString() {
-		return "Título: " + titulo + ", ISBN: " + isbn + ", género: " + genero + ", autor: " + autor + ", páginas: " + paginas;
-		
+		return "Título: " + titulo + ", ISBN: " + isbn + ", género: " + genero + ", autor: " + autor + ", páginas: "
+				+ paginas;
+
 	}
 
 	public void add() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		boolean igual = false;
+
+		if (this == o) {
+			igual = true;
+		} else {
+			Libro a = (Libro) o;
+			if (this.isbn.equalsIgnoreCase(a.isbn)) {
+				igual = true;
+			}
+		}
+		return igual;
+	}
+@Override
+	public int compareTo(Libro o) {
+		return this.titulo.compareTo(o.titulo);
+	}
+
+
+	public int compare(Libro o, Libro a) {
+		
+		return o.getPaginas() - a.getPaginas();
+	}
 }
 
-		// TODO Auto-generated method stub
-		
-	
-
-		
-		
-	
 
