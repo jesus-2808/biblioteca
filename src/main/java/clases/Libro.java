@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class Libro implements Comparable<Libro>, Comparator<Libro> {
 
 	
-	private static String titulo;
+	private String titulo;
 	private String isbn;
 	private Genero genero;
 	private String autor;
@@ -32,7 +32,7 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		this.paginas = paginas;
 	}
 
-	public static String getTitulo() {
+	public String getTitulo() {
 		return titulo;
 	}
 
@@ -131,10 +131,6 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		return null;
 	}
 
-	public static String cadenaCatalogo() {
-
-		return getTitulo();
-	}
 
 
 	}

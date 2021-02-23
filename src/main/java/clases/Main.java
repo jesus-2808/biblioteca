@@ -3,15 +3,16 @@
  */
 package clases;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main implements Comparable<Libro> {
@@ -45,10 +46,14 @@ public class Main implements Comparable<Libro> {
 				ordenaLibros(catalogo);
 				break;
 			case 6:
-				createNewFile(catalogo, obtenerDatosLibro());
+				createNewFile(catalogo);
 				break;
 			case 7:
-				cargaFichero();
+				cargaFichero(catalogo);
+				break;
+			case 8:
+				catalogo.clear();
+				break;
 			}
 		}
 	}
@@ -86,9 +91,10 @@ public class Main implements Comparable<Libro> {
 			System.out.println("5. Ordenacion de Libros");
 			System.out.println("6. Creación de fichero");
 			System.out.println("7. Carga de fichero");
+			System.out.println("8. Limpieza de catalogo");
 			System.out.println("Introduce la opcion:");
 
-			opcion = leerOpcion(7);
+			opcion = leerOpcion(8);
 
 		} while (opcion <= 0);
 
@@ -112,13 +118,14 @@ public class Main implements Comparable<Libro> {
 	private static void alta(ArrayList<Libro> catalogo) {
 		// Leer de la entrada
 		String datosLibro = obtenerDatosLibro();
+		System.out.println(datosLibro);
 		// titulo:isbn:genero:autor:paginas
 		// Procesar la entrada
 		Libro libro = procesaEntrada(datosLibro);
 		// Crear el libro con los datos de la entrada
 		catalogo.add(libro);
 		// Meter el libro en el catalogo
-		
+
 	}
 
 	private static String obtenerDatosLibro() {
@@ -127,7 +134,7 @@ public class Main implements Comparable<Libro> {
 		boolean validado = false;
 		while (!validado) {
 			System.out.println("Introduce los datos de un libro.");
-			System.out.println("Usa el formato \"titulo,isbn,genero,autor,paginas\"");
+			System.out.println("Usa el formato \"titulo:isbn:genero:autor:paginas\"");
 			try {
 				datos = leerCadena();
 				if (true)// Supongo de momento que valida siempre. Hay que comprobar que tenga el formato
@@ -144,7 +151,7 @@ public class Main implements Comparable<Libro> {
 	public static Libro procesaEntrada(String entrada) {
 		Libro libro = new Libro();
 
-		String[] datos = entrada.split(",");
+		String[] datos = entrada.split(":");
 
 		String titulo = datos[0]; /// libro.setTitulo
 		String isbn = datos[1];
@@ -233,8 +240,8 @@ public class Main implements Comparable<Libro> {
 	}
 
 //Escribir informacion de cada libro como una cadena.
-	
-	public static Libro EntradaCatalogo (String entrada) {
+
+	public static Libro entradaCatalogo(String entrada) {
 		Libro libro = new Libro();
 
 		String[] datos = entrada.split(",");
@@ -256,27 +263,45 @@ public class Main implements Comparable<Libro> {
 		return libro;
 
 	}
-	private static void createNewFile(ArrayList<Libro> catalogo, String entrada) throws IOException {
+
+	private static void createNewFile(ArrayList<Libro> catalogo) {
 		try {
-			FileWriter fichero = new FileWriter("Mis libros leidos.txt");
-			String[] datosLibro = entrada.split(",");
+			Scanner sc = new Scanner(System.in);
+			System.out.println("¿Qué nombre desea ponerle al fichero?");
+			String nombreFichero = sc.nextLine();
+			FileWriter fileStream = new FileWriter(nombreFichero + ".txt");
+			BufferedWriter fichero = new BufferedWriter(fileStream);
 			for (Libro l : catalogo) {
-				fichero.write(entrada);
+				String linea = l.getTitulo() + "," + l.getIsbn() + "," + l.getGenero() + "," + l.getAutor() + ","
+						+ l.getPaginas();
+				fichero.write(linea);
+				fichero.newLine();
+				System.out.println("Se ha insertado " + l.getTitulo() + " en el fichero");
 			}
 			fichero.close();
-			System.out.println ("Libro insertado " + entrada + " ");
+			
 		} catch (IOException e) {
 			System.out.println("Hubo un error");
 			e.printStackTrace();
 		}
 	}
 
-
-	private static void cargaFichero() {
-
+	private static void cargaFichero(ArrayList <Libro> catalogo)  {
+		try {
+			System.out.println("¿Cuál es el fichero que desea cargar?");
+			Scanner sc = new Scanner (System.in);
+			String nombreFichero = sc.nextLine();
+			FileReader fileStream = new FileReader(nombreFichero + ".txt");
+			BufferedReader fichero = new BufferedReader(fileStream);
+			String linea;
+			while ((linea = fichero.readLine()) != null) {
+				
+				Libro l = entradaCatalogo(linea);
+				catalogo.add(l);
+			}
+		} catch (IOException e) {
+			System.out.println("Hubo un error");
+			e.printStackTrace();
+		}
 	}
-	// }
 }
-//	}	
-
-//	}

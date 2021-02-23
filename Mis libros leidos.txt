@@ -1,0 +1,2 @@
+El Quijote,0002,NOVELA,Cervantes,1300
+Pascual Duarte,0003,NOVELA,Cela,180
