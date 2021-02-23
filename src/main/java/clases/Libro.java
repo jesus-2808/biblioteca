@@ -1,11 +1,13 @@
 package clases;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Libro implements Comparable<Libro>, Comparator <Libro>{
+public class Libro implements Comparable<Libro>, Comparator<Libro> {
 
-	private String titulo;
+	
+	private static String titulo;
 	private String isbn;
 	private Genero genero;
 	private String autor;
@@ -30,7 +32,7 @@ public class Libro implements Comparable<Libro>, Comparator <Libro>{
 		this.paginas = paginas;
 	}
 
-	public String getTitulo() {
+	public static String getTitulo() {
 		return titulo;
 	}
 
@@ -96,16 +98,32 @@ public class Libro implements Comparable<Libro>, Comparator <Libro>{
 		}
 		return igual;
 	}
-@Override
+
+	@Override
 	public int compareTo(Libro o) {
 		return this.titulo.compareTo(o.titulo);
 	}
 
-
 	public int compare(Libro o, Libro a) {
-		
+
 		return o.getPaginas() - a.getPaginas();
 	}
-}
 
+	public static int size(String catalogo) {
+
+		return 0;
+	}
+
+	public static ArrayList<Libro> readObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String cadenaCatalogo() {
+
+		return getTitulo();
+	}
+
+
+	}
 

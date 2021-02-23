@@ -3,6 +3,7 @@
  */
 package clases;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,14 +14,12 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-
-
-public class Main implements Comparable<Libro>{
+public class Main implements Comparable<Libro> {
 
 	public static void main(String[] args) throws IOException {
-		
 
 		ArrayList<Libro> catalogo = new ArrayList<Libro>();
+		catalogo.toString();
 		/// Implementar el equals con el isbn
 		/// para baja de libro implementar un submenu.
 
@@ -41,31 +40,31 @@ public class Main implements Comparable<Libro>{
 				buscaLibros(catalogo);
 			default:
 			case 5:
-				//Collections.sort(catalogo);
-				//System.out.println(catalogo);
+				// Collections.sort(catalogo);
+				// System.out.println(catalogo);
 				ordenaLibros(catalogo);
 				break;
 			case 6:
-				createNewFile();
+				createNewFile(catalogo, obtenerDatosLibro());
 				break;
+			case 7:
+				cargaFichero();
 			}
 		}
 	}
 
-		
-	
-private static void ordenaLibros(ArrayList<Libro> catalogo) {
+	private static void ordenaLibros(ArrayList<Libro> catalogo) {
 		System.out.println("¿Desea ordenar los libros por título (marque t) o por páginas(marque p)?");
-		Scanner teclado=new Scanner (System.in);
+		Scanner teclado = new Scanner(System.in);
 		char respuesta;
-		respuesta=teclado.next().charAt(0);
-		if(respuesta=='T'|| respuesta=='t') {
+		respuesta = teclado.next().charAt(0);
+		if (respuesta == 'T' || respuesta == 't') {
 			Collections.sort(catalogo);
-		}else if (respuesta=='P'|| respuesta=='p') {
+		} else if (respuesta == 'P' || respuesta == 'p') {
 			Collections.sort(catalogo, new Libro());
 			;
-		}else
-		System.out.println("Respuesta incorrecta");
+		} else
+			System.out.println("Respuesta incorrecta");
 	}
 
 // Patria:0001:novela:Aramburu:925
@@ -86,9 +85,10 @@ private static void ordenaLibros(ArrayList<Libro> catalogo) {
 			System.out.println("4. Búsqueda de Libros");
 			System.out.println("5. Ordenacion de Libros");
 			System.out.println("6. Creación de fichero");
+			System.out.println("7. Carga de fichero");
 			System.out.println("Introduce la opcion:");
 
-			opcion = leerOpcion(6);
+			opcion = leerOpcion(7);
 
 		} while (opcion <= 0);
 
@@ -118,6 +118,7 @@ private static void ordenaLibros(ArrayList<Libro> catalogo) {
 		// Crear el libro con los datos de la entrada
 		catalogo.add(libro);
 		// Meter el libro en el catalogo
+		
 	}
 
 	private static String obtenerDatosLibro() {
@@ -126,7 +127,7 @@ private static void ordenaLibros(ArrayList<Libro> catalogo) {
 		boolean validado = false;
 		while (!validado) {
 			System.out.println("Introduce los datos de un libro.");
-			System.out.println("Usa el formato \"titulo:isbn:genero:autor:paginas\"");
+			System.out.println("Usa el formato \"titulo,isbn,genero,autor,paginas\"");
 			try {
 				datos = leerCadena();
 				if (true)// Supongo de momento que valida siempre. Hay que comprobar que tenga el formato
@@ -143,7 +144,7 @@ private static void ordenaLibros(ArrayList<Libro> catalogo) {
 	public static Libro procesaEntrada(String entrada) {
 		Libro libro = new Libro();
 
-		String[] datos = entrada.split(":");
+		String[] datos = entrada.split(",");
 
 		String titulo = datos[0]; /// libro.setTitulo
 		String isbn = datos[1];
@@ -198,13 +199,12 @@ private static void ordenaLibros(ArrayList<Libro> catalogo) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Indique el ISBN del libro que desea buscar");
 		String isbn = sc.nextLine();
-		Libro a=new Libro();
-	
-		
-		//a.setISBN
-		//int pos=catalogo.indexof(a);;---sacar posicion del objeto a en el catalogo
+		Libro a = new Libro();
+
+		// a.setISBN
+		// int pos=catalogo.indexof(a);;---sacar posicion del objeto a en el catalogo
 		for (Libro libro : catalogo) {
-			int Posicion=catalogo.indexOf(libro);
+			int Posicion = catalogo.indexOf(libro);
 			if (libro.getIsbn().equals(isbn)) {
 				System.out.println("La posición del libro es: " + catalogo.indexOf(libro));
 				System.out.println(libro);
@@ -220,27 +220,63 @@ private static void ordenaLibros(ArrayList<Libro> catalogo) {
 		opcion = teclado.nextLine();
 		return opcion;
 	}
+
 	public static int compareTo(ArrayList<Libro> catalogo) {
 		return 0;
-	
+
 	}
+
 	@Override
 	public int compareTo(Libro arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+//Escribir informacion de cada libro como una cadena.
 	
-	private static void createNewFile() throws IOException {
-		  
-			 
-		      FileWriter fichero = new FileWriter("filename.txt");  
-		      fichero.write("el quijote");
-		    
-		 }
-		// }
+	public static Libro EntradaCatalogo (String entrada) {
+		Libro libro = new Libro();
+
+		String[] datos = entrada.split(",");
+
+		String titulo = datos[0]; /// libro.setTitulo
+		String isbn = datos[1];
+		Genero genero = Genero.getGenero(datos[2]);
+		String autor = datos[3];
+		Integer paginas = Integer.parseInt(datos[4]);
+
+		libro.setTitulo(titulo);
+		libro.setAutor(autor);
+		libro.setIsbn(isbn);
+		libro.setGenero(genero);
+		libro.setAutor(autor);
+		libro.setPaginas(paginas);
+
+		System.out.println(libro);
+		return libro;
+
 	}
+	private static void createNewFile(ArrayList<Libro> catalogo, String entrada) throws IOException {
+		try {
+			FileWriter fichero = new FileWriter("Mis libros leidos.txt");
+			String[] datosLibro = entrada.split(",");
+			for (Libro l : catalogo) {
+				fichero.write(entrada);
+			}
+			fichero.close();
+			System.out.println ("Libro insertado " + entrada + " ");
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+
+
+	private static void cargaFichero() {
+
+	}
+	// }
+}
 //	}	
 
 //	}
-
-
