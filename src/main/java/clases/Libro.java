@@ -109,7 +109,19 @@ public class Libro implements Comparable<Libro>, Comparator<Libro> {
 		return o.getPaginas() - a.getPaginas();
 	}
 
+
 	public static int size(String catalogo) {
+		
+		return 0;
+	}
+
+	public static ArrayList<Libro> readObject1() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public static int size1(String catalogo) {
 
 		return 0;
 	}

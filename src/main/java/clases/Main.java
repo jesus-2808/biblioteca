@@ -266,7 +266,7 @@ public class Main implements Comparable<Libro> {
 			fichero.close();
 			System.out.println ("Libro insertado " + entrada + " ");
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
+			System.out.println("Hubo un error");
 			e.printStackTrace();
 		}
 	}
